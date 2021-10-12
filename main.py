@@ -24,7 +24,7 @@ def SendMessage(DC_Url,Mediamarkt_Url,Cost):
     webhook.post(embeds=[{"title": "Ps5 drop", "description": "Ps5 drop by: "+Mediamarkt_Url+" Cost:"+str(Cost)}],)
 
 class Tab():
-    def __init__(self,email,password, vorname, nachname, plz, stadt, straße, hausnummer, carting,productUrl,webHook):
+    def __init__(self,email,password, vorname, nachname, plz, stadt, straße, hausnummer,telefonnummer, carting,productUrl,webHook):
         self.user = [vorname, nachname, plz, stadt, straße, hausnummer, email, password]
         self.Vorname = vorname
         self.Nachname = nachname
@@ -37,6 +37,7 @@ class Tab():
         self.Cartingnumber = carting
         self.ProductUrl = productUrl
         self.WebHook = webHook
+        self.Telefonnummer = telefonnummer
         # Cart Address
         self.Xpath_addtocart = '//*[@id="pdp-add-to-cart-button"]'
         self.Xpath_addtocart_Cookies = '/html/body/div[3]/div/form/div/div/div[2]/div/div/button[4]'
@@ -77,27 +78,27 @@ class Tab():
         self.Xpath_Payment_Email = '//*[@id="email"]'
 
     def main(self):
-        for i in range(1,int(self.Cartingnumber)+1):
-            self.OpenTab()
-            while True:
+        self.OpenTab()
+        while True:
+            if self.Carting():
+                break
+        while True:
+            if self.CheckoutAddress():
+                break
+            elif not self.CheckoutAddress():
                 if self.Carting():
                     break
-            while True:
-                if self.CheckoutAddress():
-                    break
-                elif not self.CheckoutAddress():
-                    if self.Carting():
-                        break
-            while True:
-                if self.CheckoutPayment():
-                    break
-            while True:
-                if self.CheckoutFinally():
-                    break
-            while True:
-                if self.SendMail():
-                    break
-            self.driver.close()
+        while True:
+            if self.CheckoutPayment():
+                break
+        while True:
+            if self.CheckoutFinally():
+                break
+        while True:
+            if self.SendMail():
+                break
+        self.driver.close()
+        time.sleep(2)
 
     def OpenTab(self):
         self.options = uc.ChromeOptions()
@@ -183,6 +184,7 @@ class Tab():
         while True:
             self.OldUrl = self.driver.current_url
             if self.driver.current_url == self.Url_Finally:
+                self.OldUrl = self.driver.current_url
                 self.PushButton(self.Xpath_finally_next)
                 break
 
@@ -192,8 +194,10 @@ class Tab():
         while True:
             if self.OldUrl != self.driver.current_url:
                 break
-        SendMessage(self.WebHook,self.ProductUrl,self.PaymentCost)
+        SendMessage(self.WebHook,self.driver.current_url,self.PaymentCost)
         return True
+a = Tab("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",'017641794896',10,'https://www.mediamarkt.de/de/product/_lenovo-v15-2728489.html',"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU")
+a.main()
 def main():
     s = 0
     try:
@@ -203,7 +207,7 @@ def main():
         print("Not Enough Arguments")
     if s == 1:
         URL = sys.argv[1]
-        Tabs.append(Tab("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU"))
+        Tabs.append(Tab("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",'017641794896',10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU"))
         Tabs[0].main()
 if __name__ == '__main__':
     main()
