@@ -17,6 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 ForwardedEmail = []
 ThreadsTab = []
+Tabs = []
 
 def SendMessage(DC_Url,Mediamarkt_Url,Cost):
     webhook = Discord(url=DC_Url)
@@ -202,7 +203,7 @@ def main():
     if s == 1:
         URL = sys.argv[1]
         print("Url ausgelesen: "+sys.argv[1])
-        a = Tab.__init__("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU")
-        a.main()
+        Tabs.append(Tab("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU"))
+        Tabs[0].main()
 if __name__ == '__main__':
     main()
