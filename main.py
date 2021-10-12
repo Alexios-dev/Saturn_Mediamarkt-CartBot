@@ -193,7 +193,13 @@ class Tab():
         return True
 
 def main():
-    if len(sys.argv) == 2:
+    s = 0
+    try:
+        URL = sys.argv[1]
+        s = 1
+    except:
+        print("Not Enough Arguments")
+    if s == 1:
         URL = sys.argv[1]
         print("Url ausgelesen: "+sys.argv[1])
         a = Tab.__init__("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU")
