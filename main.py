@@ -98,10 +98,11 @@ class Tab():
                 if self.SendMail():
                     break
             self.driver.close()
+
     def OpenTab(self):
         self.options = uc.ChromeOptions()
         self.options.add_argument("--diable-backgrounding-occluded-windows")
-        self.options.headless = True
+        self.options.headless = False
         while True:
             try:
                 self.driver = uc.Chrome(version_main=93, options=self.options)
@@ -173,8 +174,9 @@ class Tab():
             if self.driver.current_url == self.Url_Payment:
                 break
         time.sleep(2)
+        self.PaymentCost = self.driver.find_element_by_xpath(
+            '//*[@id="root"]/div[2]/div[3]/div[1]/div/div[2]/div/div[2]/div/div/div/div/div[3]/h3/span').text
         self.PushButton(self.Xpath_Payment_next)
-        input("s")
         return True
 
     def CheckoutFinally(self):
@@ -190,9 +192,8 @@ class Tab():
         while True:
             if self.OldUrl != self.driver.current_url:
                 break
-        SendMessage(self.WebHook,self.ProductUrl,"0")
+        SendMessage(self.WebHook,self.ProductUrl,self.PaymentCost)
         return True
-
 def main():
     s = 0
     try:
@@ -202,7 +203,6 @@ def main():
         print("Not Enough Arguments")
     if s == 1:
         URL = sys.argv[1]
-        print("Url ausgelesen: "+sys.argv[1])
         Tabs.append(Tab("Alexander.genenger@hotmail.de","test","Alexander","Genenger","41065","Mönchengladbach","Bungtstraße","52",10,URL,"https://discord.com/api/webhooks/897429754439942185/0Al9O5kR1GTrXpckcBQr0vF9e-ngGNBnE6X5hKCxV88yeC_pdqsWzYvs1Q5jiMc1KPPU"))
         Tabs[0].main()
 if __name__ == '__main__':
