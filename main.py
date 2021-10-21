@@ -106,7 +106,7 @@ class Tab():
         self.options.headless = False
         while True:
             try:
-                self.driver = uc.Chrome(version_main=93, options=self.options)
+                self.driver = uc.Chrome(options=self.options)
                 return True
             except:
                 pass
